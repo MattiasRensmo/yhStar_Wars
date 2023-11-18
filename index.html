@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mattias Star Wars catalog</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="main.js" defer type="application/javascript"></script>
+  </head>
+
+  <body>
+    <header class="main-header">
+      <h1>Star Wars Catalog</h1>
+    </header>
+
+    <main>
+      <section class="box" id="chose-char">
+        <header class="box__header">
+          <nav id="chose-category" class="box__nav"></nav>
+          <div class="loader loader-small" style="display: block"></div>
+          <h2 id="category-title" class="box__title"></h2>
+        </header>
+        <div id="choose__content" class="box__content">
+          <div class="loader"></div>
+          <ul id="display-list" class="box__list"></ul>
+        </div>
+
+        <footer class="box__footer">
+          <p id="prev-container">
+            <a id="prev" class="list-nav" href="#">Prev</a>
+          </p>
+          <p id="nav-info"></p>
+          <p id="next-container">
+            <a id="next" class="list-nav" href="#">Next</a>
+          </p>
+        </footer>
+      </section>
+
+      <article id="details" class="box">
+        <header id="details__header" class="box__header">
+          <p id="details-category" class="box__over-header"></p>
+          <h2 id="details-title" class="box__title"></h2>
+        </header>
+        <div id="details__content" class="box__content">
+          <div class="loader"></div>
+        </div>
+      </article>
+    </main>
+  </body>
+</html>
