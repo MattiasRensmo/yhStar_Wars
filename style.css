@@ -72,15 +72,16 @@ li {
 
 main {
   display: flex;
-  gap: 1rem;
-  justify-content: space-evenly;
+  /* gap: 2; */
+  column-gap: clamp(1rem, 5vw, 10rem);
+  justify-content: center;
   flex-wrap: wrap;
 }
 
 .box {
   flex: 1;
   max-width: 25rem;
-  min-width: 19rem;
+  min-width: 340px;
   display: flex;
   flex-direction: column;
   background-color: #c4c4c4;
@@ -88,6 +89,7 @@ main {
   min-height: 30lvh;
   padding: 1rem;
   margin-top: -2rem;
+  margin-bottom: 1rem;
   border-radius: 1rem 1rem 0 0;
 }
 
