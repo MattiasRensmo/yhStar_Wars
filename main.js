@@ -4,12 +4,12 @@
 const choseCategoryList = document.querySelector("#chose-category")
 const entryList = document.querySelector("#display-list")
 
-const detailsHeader = document.querySelector("#details__header")
+// const detailsHeader = document.querySelector("#details__header")
 const detailsContent = document.querySelector("#details__content")
 
 const nextBtn = document.querySelector("#next")
 const prevBtn = document.querySelector("#prev")
-const navInfo = document.querySelector("#nav-info")
+// const navInfo = document.querySelector("#nav-info")
 
 /*
  * Start
@@ -82,9 +82,12 @@ function displayCategoryHeader(headerText) {
   title.innerText = capitalize(headerText)
 }
 function loadCategoryEntries(url) {
+  const chooseFooter = document.querySelector("#choose-footer")
+  chooseFooter.style.display = "none"
   showLoadingSpinner("#choose__content")
   const entries = getUrl(url)
   displayCategoryEntries(entries)
+  chooseFooter.style.display = "flex-item"
 }
 
 //Lists the entries in a category (Luke Skywalker, C-3Po, R2-D2, ...)
@@ -111,6 +114,8 @@ async function displayCategoryEntries(category) {
   })
   // Create navigation buttons
   displayNextPrevBtn(entireCategory)
+
+  showNumberOfPages(entireCategory)
 }
 
 function displayNextPrevBtn(entireCategory) {
@@ -132,6 +137,7 @@ function displayNextPrevBtn(entireCategory) {
     prevBtn.dataset.url = ""
   }
 }
+0
 
 async function showDetails(link) {
   //Runs when we click on a link to an detail-item
@@ -319,6 +325,25 @@ function addToCache(url, data) {
 /*
  * WORK IN PROGRESS
  */
+
+function showNumberOfPages(details) {
+  console.log(details)
+  const nxt = details.next
+  const pre = details.previous
+
+  const p = document.querySelector("#page-info")
+  p.innerHTML = ""
+
+  if (!nxt && !pre) return
+
+  const pageNum = nxt
+    ? Number(nxt.match(/\d+$/)) - 1
+    : pre
+    ? Number(pre.match(/\d+$/)) + 1
+    : ""
+  // console.log(details.next, details.next[-1])
+  p.innerHTML = `Page ${pageNum} of ${Math.ceil(details.count / 10)} `
+}
 
 /*
  * OTHER
