@@ -137,7 +137,6 @@ function displayNextPrevBtn(entireCategory) {
     prevBtn.dataset.url = ""
   }
 }
-0
 
 async function showDetails(link) {
   //Runs when we click on a link to an detail-item
