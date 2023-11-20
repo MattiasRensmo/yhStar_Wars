@@ -169,6 +169,62 @@ li:has(> a.chosen) {
   height: 1em;
 }
 
+#sub-detail__nav {
+  display: flex;
+  justify-content: space-evenly;
+  background-color: #535556;
+  color: #c4c4c4;
+  font-size: 1.3rem;
+  height: 3rem;
+  align-items: center;
+  margin-inline: -1rem;
+}
+
+.sub-detail__nav-item {
+  margin: 0;
+  /* padding: 0; */
+
+  padding: 0.5rem;
+  margin-top: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.8rem;
+
+  cursor: pointer;
+}
+
+.category-container {
+  margin-bottom: 1rem;
+  /* border-bottom: 1px solid #535556; */
+}
+
+.subDetail__heading {
+  padding-top: 1.5rem;
+  margin-top: 1rem;
+  color: #535556;
+  border-top: 1px solid #535556;
+  font-size: 1.5rem;
+  text-decoration: none;
+  display: block;
+}
+
+.subDetail__heading:first-child {
+  border-top: none;
+}
+
+.selected {
+  background-color: #c4c4c4;
+  color: #535556;
+  /* height: 100%; */
+
+  border-radius: 0.4rem 0.4rem 0 0;
+  /* padding-top: 0.1rem; */
+  /* justify-content: center; */
+}
+
+.hidden {
+  display: none;
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);

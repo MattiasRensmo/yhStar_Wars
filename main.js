@@ -4,8 +4,10 @@
 const choseCategoryList = document.querySelector("#chose-category")
 const entryList = document.querySelector("#display-list")
 
-// const detailsHeader = document.querySelector("#details__header")
 const detailsContent = document.querySelector("#details__content")
+
+const subDetailNavBox = document.querySelector("#sub-detail__nav")
+const subDetailContentBox = document.querySelector("#sub-detail__content")
 
 const nextBtn = document.querySelector("#next")
 const prevBtn = document.querySelector("#prev")
@@ -51,10 +53,46 @@ entryList.addEventListener("click", (e) => {
 })
 
 //Follow links in details
-detailsContent.addEventListener("click", (e) => {
+const detailsBox = document.querySelector("#details")
+detailsBox.addEventListener("click", (e) => {
   const clickedUrl = e.target.dataset.url
   if (clickedUrl) showDetails(clickedUrl)
 })
+
+document.querySelector("#sub-detail__nav").addEventListener("click", (e) => {
+  if (e.target.id) {
+    resetSubDetail()
+
+    //Selects the clicked item
+    const selectedNav = document.querySelector("#" + e.target.id)
+    selectedNav.classList.add("selected")
+
+    //Shows the chosen detail container
+    const selectedContainer = document.querySelector(
+      "#" + e.target.id + "__container"
+    )
+    selectedContainer.classList.remove("hidden")
+  }
+})
+
+function resetSubDetail(hardReset = false) {
+  document.querySelector("#sub-detail").classList = ""
+
+  //Reset every nav item
+  const navItems = document.querySelectorAll(".sub-detail__nav-item")
+  navItems.forEach((item) => (item.classList = "sub-detail__nav-item"))
+
+  //Hide every sub detail container
+  const contentContainer = document.querySelectorAll(".category-container")
+  contentContainer.forEach((item) => item.classList.add("hidden"))
+
+  if (hardReset) {
+    subDetailNavBox.innerHTML = ""
+    subDetailContentBox.innerHTML = ""
+
+    // console.log("Hard Reset", nav, content)
+  }
+}
 
 /*
  * FIXED FUNCTIONS
@@ -151,6 +189,10 @@ async function showDetails(link) {
   detailsContent.innerHTML = ""
 
   displayDetailsContent(details)
+
+  //Show sub details
+
+  resetSubDetail(true)
 }
 
 function displayDetailsContent(details) {
@@ -160,7 +202,7 @@ function displayDetailsContent(details) {
   for (const [key, value] of Object.entries(details)) {
     if (doNotDisplay.includes(key)) continue //Do not print
 
-    createH3(key)
+    createH3(key, detailsContent)
 
     //Print different content depending on if it is a array, a string or a number
     switch (typeof value) {
@@ -186,6 +228,7 @@ function displayDetailsContent(details) {
 
           //Populate empty li with content
           getUrl(htmlLink).then((linkDetails) => {
+            createSubDetails(linkDetails)
             const linkName = linkDetails.name || linkDetails.title
             const linkUrl = linkDetails.url
             const linkId = makeId(linkDetails.url)
@@ -213,6 +256,8 @@ function displayDetailsContent(details) {
 
           //Populate with content
           getUrl(value).then((linkDetails) => {
+            createSubDetails(linkDetails)
+
             const linkName = linkDetails.name || linkDetails.title
             //Create a nice link
             const link = createApiLink(
@@ -248,6 +293,69 @@ function displayDetailsContent(details) {
     }
   }
 }
+
+function createSubDetails(details) {
+  const print = {
+    name: "",
+    title: "",
+    episode_id: "",
+    release_date: "",
+    rotation_period: "days",
+    orbital_period: "days",
+    diameter: "km",
+    climate: "",
+    terrain: "",
+    model: "",
+    max_atmosphering_speed: "km/h",
+    height: "cm",
+    mass: "kg",
+  }
+
+  const categoryName = makeCategoryName(details.url)
+
+  const categoryContainer = document.createElement("div")
+
+  if (!subDetailNavBox.querySelector(`#${categoryName}`)) {
+    const li = document.createElement("li")
+    li.classList.add("sub-detail__nav-item")
+    li.id = categoryName
+    li.innerText = categoryName
+    subDetailNavBox.append(li)
+
+    categoryContainer.classList.add("category-container")
+    categoryContainer.id = `${categoryName}__container`
+    categoryContainer.classList.add("hidden")
+    subDetailContentBox.append(categoryContainer)
+  }
+
+  for ([category, content] of Object.entries(details)) {
+    if (category in print) {
+      const parent = document.querySelector(`#${categoryName}__container`)
+
+      if (category == "name" || category == "title") {
+        h2 = createApiLink(
+          capitalize(content),
+          details.url,
+          (id = ""),
+          (className = "subDetail__heading")
+        )
+        parent.append(h2)
+        continue
+      } else {
+        createH3(category, parent)
+      }
+
+      const p = document.createElement("p")
+      const units = print[category] ? " " + print[category] : ""
+      p.innerText = capitalize(content) + units
+      parent.append(p)
+    }
+  }
+  //Show the first subcategory as default
+  subDetailNavBox.firstElementChild.classList.add("selected")
+  subDetailContentBox.firstElementChild.classList.remove("hidden")
+}
+
 function displayDetailsHeading(details) {
   const overHeading = document.querySelector("#details-category")
   overHeading.innerText = makeCategoryName(details.url)
@@ -256,10 +364,10 @@ function displayDetailsHeading(details) {
   h2.innerText = details.name || details.title
 }
 
-function createH3(text) {
+function createH3(text, parent) {
   const heading = document.createElement("h3")
   heading.innerText = capitalize(text.replaceAll("_", " "))
-  detailsContent.append(heading)
+  parent.append(heading)
 }
 
 function createListItemForAnchor(htmlLink, parent) {
@@ -362,7 +470,7 @@ async function getNameFromLink(link) {
 }
 
 function capitalize(str) {
-  if (!typeof str === "string") return str
+  if (typeof str !== "string") return str
   return str.charAt(0).toUpperCase() + str.slice(1)
 }
 
