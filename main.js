@@ -11,7 +11,6 @@ const subDetailContentBox = document.querySelector("#sub-detail__content")
 
 const nextBtn = document.querySelector("#next")
 const prevBtn = document.querySelector("#prev")
-// const navInfo = document.querySelector("#nav-info")
 
 /*
  * Start
@@ -121,11 +120,10 @@ function displayCategoryHeader(headerText) {
 }
 function loadCategoryEntries(url) {
   const chooseFooter = document.querySelector("#choose-footer")
-  chooseFooter.style.display = "none"
+  // chooseFooter.style.display = "none"
   showLoadingSpinner("#choose__content")
   const entries = getUrl(url)
   displayCategoryEntries(entries)
-  chooseFooter.style.display = "flex-item"
 }
 
 //Lists the entries in a category (Luke Skywalker, C-3Po, R2-D2, ...)
@@ -450,6 +448,9 @@ function showNumberOfPages(details) {
     : ""
   // console.log(details.next, details.next[-1])
   p.innerHTML = `Page ${pageNum} of ${Math.ceil(details.count / 10)} `
+
+  // p.style = 'style="display: flex-item;'
+  // chooseFooter.style.display = "flex-item"
 }
 
 /*
